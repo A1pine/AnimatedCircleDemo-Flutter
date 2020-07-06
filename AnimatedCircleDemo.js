@@ -17,6 +17,7 @@ var slider = document.getElementById('slide')
 
 function draw_rectangle(ctx, x, y, width, height) {
     ctx.strokeStyle = "#000"
+    ctx.setLineDash([10,4])
     ctx.lineWidth = 1
     // ctx.fillRect(x, y, width, height)
     ctx.strokeRect(x, y, width, height)
@@ -69,6 +70,7 @@ function updateSlider(slideAmount) {
 
     //绘制贝塞尔曲线
     //左上部分
+    ctx.setLineDash([])
     ctx.moveTo(pointD.x, pointD.y)
     ctx.bezierCurveTo(c7.x, c7.y, c8.x, c8.y, pointA.x, pointA.y)
 
@@ -83,9 +85,13 @@ function updateSlider(slideAmount) {
     //左下部分
     ctx.moveTo(pointC.x, pointC.y)
     ctx.bezierCurveTo(c5.x, c5.y, c6.x, c6.y, pointD.x, pointD.y)
-    ctx.fillStyle = 'red'
+    ctx.strokeStyle = "#f44336"
+    ctx.fillStyle = "#f44336"
+    ctx.fill()
     ctx.stroke()
-
+    
+    //fill the circle
+    DrawQuad(pointA,pointB,pointC,pointD)
 
 
     // //B 点动 or D 点动
@@ -119,6 +125,27 @@ function getDirection(progress) {
         console.log("D点动")
         return true;
     }
+}
+
+function DrawQuad(A , B , C , D){
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    //设置线条颜色为蓝色
+    ctx.strokeStyle ="#f44336";
+    //设置路径起点坐标
+    ctx.moveTo(A.x,A.y);
+    //绘制直线线段到坐标点(20, 100)
+    ctx.lineTo(B.x,B.y);
+    //绘制直线线段到坐标点(70, 100)
+    ctx.lineTo(C.x,C.y);  
+    //绘制直线线段到坐标点(20,100)  
+    ctx.lineTo(D.x,D.y);
+    //先关闭绘制路径。
+    ctx.closePath();
+    //最后，按照绘制路径画出直线
+    ctx.fillStyle="#f44336";
+    ctx.stroke();
+    ctx.fill();
 }
 
 function getRads(degrees) {
